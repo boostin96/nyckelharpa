@@ -22,6 +22,13 @@
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
  * 
+ *	May 12, 2019 v0.1.5	Show summary of settings on pageTwo prior to Done
+ *						Insure non keypad device does not get a beep command with time, may create an error
+ *	May 11, 2019 v0.1.5	Add settings for open door tone beep or last 10 seconds of setexitdelay
+ *						Add setting to specify open doors tone here rather than in device
+ *						moved talker door open event to end of open DoorHandler routines,
+ *							otherwise it delayed beeps and chimes by over 2+ seconds
+ *						Do some editing on settings and produce warning messages
  *	May 10, 2019 v0.1.4	Adjust Entry delay beeping devices text to warn against using keypad, it causes entry delay tones to stop 
  *	May 06, 2019 v0.1.3	Issue in doorHandler: child device not to parent device state when system is armed, 
  *						caused false alarm. Corrected doorHandler code.
@@ -83,12 +90,14 @@ definition(
 
 preferences {
     page(name: "main", nextPage: "globalsPage")
-    page(name: "globalsPage", nextPage: "main")	
-}
+    page(name: "globalsPage", nextPage: "globalsVerify")	
+    page(name: "globalsVerify", nextPage: "globalsPage")
+    page(name: "pageTwo")
+	}
 
 def version()
 	{
-	return "0.1.4";
+	return "0.1.5";
 	}
 def main()
 	{
@@ -96,24 +105,22 @@ def main()
 		{
 		if (app.getInstallationState() == 'COMPLETE')	//note documentation shows as lower case, but returns upper
 			{  
-//			logdebug "dynamicPage: main"
 			def modeFixChild="Create"
-			def children = getChildApps()
-			children.each
-				{ child ->
-				def childLabel = child.getLabel()
-				def appid=app.getId()
-//				logdebug "child label ${childLabel} ${appid}"
-				if (childLabel.matches("(.*)(?i)ModeFix(.*)"))	
+			getChildApps().each
+				{ 
+				if (it.getLabel()=='Nyckelharpa ModeFix')	
 					{
 					modeFixChild="Update"
 					}
 				}
-			def modeActive=" Inactive"
-			def globalKeypadControl=true
-			if (globalFixMode)
-				{modeActive=" Active"}
-			def fixtitle = modeFixChild + modeActive + " Mode Fix Settings"
+			if (modeFixChild=='Create')
+				{
+				section 
+					{
+					paragraph "<b>Warning: A Modefix profile must be created, otherwise keypad exit delay tones, and Talker open/close contact messages are not generated" 
+					}
+				}
+			def fixtitle = modeFixChild +" Mode Fix Settings"
 			section 
 				{
 				input "logDebugs", "bool", required: false, defaultValue:false,
@@ -179,13 +186,17 @@ def main()
 		}
 	}
 
-def globalsPage()
+def globalsPage(error_msg)
 	{	
 	dynamicPage(name: "globalsPage", title: "Global Settings")
 		{
 //		logdebug "dynamicPage: globalsPage"
 		section 
 			{
+			if (error_msg instanceof String )
+				{
+				paragraph "<b>"+error_msg+"</b>"
+				}
 			input "globalDisable", "bool", required: true, defaultValue: false,
 				title: "Disable All Functions. Default: Off/False"
 //			input "globalKeypadControl", "bool", required: true, defaultValue: true, submitOnChange: true,
@@ -268,8 +279,15 @@ def globalsPage()
  */	
 			input "globalAlarmDevices", "capability.alarm", required: false, multiple: true,
 				title: "(Optional!) Beep these alarm devices when entry delay begins. Originally designed to beep a siren as a warning. Warning! Do not select a keypad here, it kills entry delay tones"
-			input "globalBeeperDevices", "capability.tone", required: false, multiple: true,
+			input "globalBeeperDevices", "capability.tone", required: false, multiple: true, submitOnChange: true,
 				title: "(Optional!) Beep/Chime these devices when any monitored contact sensor opens, and arm state is disarmed"
+			if (globalBeeperDevices)
+ 				{
+ 				input "globalBeeperSeconds", "number", required: false, range: "1..10", submitOnChange: true,defaultValue: 2,
+ 						title: "Keypad sound duration in seconds for open contact Beep/Chime from 1 to 10 when arm state is disarmed. Default: 2"
+				input "globalBeeperExitSound", "bool", required: false, defaultValue:false,
+					title: "When available use warning fast beep from the keypad's exit delay tone"
+				}
 			if (!state.configured)
 				{
 				input "globalChildPrefix", "text", title:"Simulated Device Prefix. Simulated device names used with Forced HSM Arming, and the simulaed Panic Contact, start with this prefix.\n\nThe prefix must start with a letter and the only supported characters are letters, numbers and hyphens.\n\nThis setting can't be changed once you leave this screen.",
@@ -283,6 +301,175 @@ def globalsPage()
 		}
 	}	
 
+def globalsVerify() 				//edit globals data
+	{
+	def error_msg=""
+	if (globalKeypadDevices)
+		{
+		globalKeypadDevices.each
+			{
+			if (it.typeName != 'Centralitex Keypad')
+				error_msg+="Keypad ${it.label} must be changed to use Centralitex Device handler\n\n"
+			}
+		}	
+
+	if (globalAlarmDevices && globalKeypadDevices)
+		{
+		globalAlarmDevices.each
+			{
+			globalKeypadDevices.each
+				{
+				keypad ->
+				if (it.id == keypad.id)
+					error_msg+="Keypad ${it.label} cannot be used for an alarm device\n\n"
+				}
+			}
+		}	
+	if (error_msg>"")  	
+		globalsPage(error_msg)
+	else
+		pageTwo()
+	}
+
+def pageTwo()
+	{
+	dynamicPage(name: "pageTwo", title: "<b>Global settings verified, press 'Done' to update global settings</b>", install: true, uninstall: true)
+		{
+		def workMsg
+		def childModeFixError = true
+		getChildApps().each
+			{
+			if (it.getLabel()=='Nyckelharpa ModeFix')	
+				{
+				childModeFixError=false
+				}
+			}
+		if (childModeFixError)
+			{
+			section 
+				{
+				paragraph "<b>Warning: A Modefix profile must be created, otherwise keypad exit delay tones, and Talker open/close contact messages are not generated</b>" 
+				}
+			}
+
+		section 
+			{
+			if (globalKeypadDevices)
+				{
+				workMsg="Keypads used for arming and disarming ${globalKeypadDevices}"
+				if (globalPanic)
+					workMsg += "\nKeypad Panic key is active when available"
+				else
+					workMsg += "\nKeypad Panic key is not monitored"
+				if (globalPinMsgs)
+					{
+					if (globalPinLog || globalPinPush || globalPinPhone)
+						{
+						workMsg += "\nValid Pin entries posted to ["
+						if (globalPinLog)
+							workMsg += "log.trace "
+						if (globalPinPush)
+							workMsg += "Pushover "
+						if (globalPinPhone)
+							workMsg += "SMS $globalPinPhone"
+						workMsg +=']'
+						}	
+					else
+						workMsg+= "\nValid Pin entries are not logged"
+					}
+				else
+					workMsg+= "\nValid Pin entries are not logged"
+				if (globalBadPinMsgs)
+					{
+					if (globalBadPinLog || globalBadPinPush || globalBadPinPhone)
+						{
+						workMsg += "\nInvalid Pin entries posted to ["
+						if (globalBadPinLog)
+							workMsg += "log.trace "
+						if (globalBadPinPush)
+							workMsg += "Pushover "
+						if (globalBadPinPhone)
+							workMsg += "SMS $globalPinPhone"
+						workMsg +=']'
+						}	
+					else
+						workMsg+= "\nInvalid Pin entries are not logged"
+					}
+				else
+					workMsg+= "\nInvalid Pin entries are not logged"
+				}
+			else
+				workMsg = "Keypads are not defined for arming and disarming"
+			paragraph workMsg
+			
+			if (globalAwayContacts)
+				{
+				workMsg="Arming Away: these contacts allow HSM arming when open $globalAwayContacts"
+				if (globalAwayNotify)
+					workMsg+= "\nNotifiy when Away contact is open by $globalAwayNotify"
+				else
+					workMsg+= "\nNo notification when Away contact is open at arming"
+				paragraph workMsg
+				}
+			else
+				paragraph "Standard HSM function when arming Away"
+
+			if (globalHomeContacts)
+				{
+				workMsg="Arming Home: these contacts allow HSM arming when open $globalHomeContacts"
+				if (globalHomeNotify)
+					workMsg+= "\nNotifiy when Home contact is open by $globalHomeNotify"
+				else
+					workMsg+= "\nNo notification when Home contact is open at arming"
+				paragraph workMsg
+				}
+			else
+				paragraph "Standard HSM function when arming Home"
+
+			if (globalNightContacts)
+				{
+				workMsg="Arming Night: these contacts allow HSM arming when open $globalNightContacts"
+				if (globalNightNotify)
+					workMsg+= "\nNotify when Night contact is open by $globalNightNotify"
+				else
+					workMsg+= "\nNo notification when Night contact is open at arming"
+				paragraph workMsg
+				}
+			else
+				paragraph "Standard HSM function when arming Night"
+
+
+			if (globalAlarmDevices)
+				paragraph "These devices beep or sound tones at Entry Delay $globalAlarmDevices" 
+			if (globalBeeperDevices)
+				{
+				workMsg = "These devices beep or sound tones when system is disarmed and monitored contact opens $globalBeeperDevices"
+				workMsg+="\nKeypad device sound duration is $globalBeeperSeconds seconds"
+				if (globalBeeperExitSound)
+					workMsg+="\nKeypad's Fast Beep sound generated when available"
+				paragraph workMsg
+				}	
+
+			if (globalChildPrefix)
+				paragraph "Simulated device names begin with $globalChildPrefix"
+			workMsg=""
+			getChildDevices().each
+				{
+				if (workMsg=="")
+					workMsg="Generated Child Devices (this may change after clicking Done)"
+				workMsg+="\n$it.label"
+				}
+			if (workMsg>"")	
+				paragraph workMsg
+			
+			if (sendPushMessage)
+				paragraph "Devices receiving Pushover notifications: $sendPushMessage"
+			else
+				paragraph "Pushover devices are not defined"
+			}
+		}
+	}
+	
 def installed() {
     log.info "Installed with settings: ${settings}"
     initialize()
@@ -1540,17 +1727,40 @@ def deleteOldChildDevice(deviceData)
 def DoorHandler(evt)		//Should be real devices with child device
 	{
 //	logdebug "DoorHandler entered ${evt?.displayName} ${evt?.value} ${evt?.deviceId}"  remove to speed up child open
+	def resetKeypads=false				//do keypads have to be reset to OFF/Disarmed from running setExitAway 
 	if (evt.value=='open')
 		{
 		getChildDevice("$globalChildPrefix${evt.deviceId}").open()		//open the child device
 		if (location.hsmStatus=='disarmed' || location.hsmStatus == 'allDisarmed')
 			{
+			if (globalBeeperDevices)
+				{
+				if (globalBeeperSeconds)
+					{
+					globalBeeperDevices.each
+						{
+						if (globalBeeperExitSound && it.hasCommand("setExitAway"))
+							{
+							it.setExitAway(globalBeeperSeconds)	//turns on the keypads status light and blinks 
+							resetKeypads=true
+							}
+						else
+						if (it.typeName=='Centralitex Keypad')
+							it.beep(globalBeeperSeconds as Integer)
+						else
+							it.beep()
+						}	
+					if (resetKeypads)	
+						runInMillis((globalBeeperSeconds * 1000) + 1500, delaysetDisarmed)	//restore disarmed
+					}
+				else	
+					globalBeeperDevices.beep()
+				}
+//			moved location event here from top of routine or there is a 2 second delay producing the beep/chime
 			def locevent = [name:"Nyckelharpatalk", value: "contactOpenMsg", isStateChange: true,
 				displayed: true, descriptionText: "${evt.displayName} is open", linkText: "${evt.displayName} is open",
 				data: "${evt.displayName}"]	
 			sendLocationEvent(locevent)
-			if (globalBeeperDevices)
-				globalBeeperDevices.beep()
 			}
 		}	
 	else
@@ -1569,16 +1779,39 @@ def DoorHandler(evt)		//Should be real devices with child device
 def MonitorDoorHandler(evt)		//monitored only no child device
 	{
 	logdebug "MonitorDoorHandler entered ${evt?.displayName} ${evt?.value} ${evt?.deviceId}"
+	def resetKeypads=false				//do keypads have to be reset to OFF/Disarmed from running setExitAway 
 	if (location.hsmStatus=='disarmed' || location.hsmStatus == 'allDisarmed')
 		{
 		if (evt.value=='open')
 			{
+			if (globalBeeperDevices)
+				{
+				if (globalBeeperSeconds)
+					{
+					globalBeeperDevices.each
+						{
+						if (globalBeeperExitSound && it.hasCommand("setExitAway"))
+							{
+							it.setExitAway(globalBeeperSeconds)	//turns on the keypads status light and blinks 
+							resetKeypads=true
+							}
+						else
+						if (it.typeName=='Centralitex Keypad')
+							it.beep(globalBeeperSeconds as Integer)
+						else
+							it.beep()
+						}	
+					if (resetKeypads)	
+						runInMillis((globalBeeperSeconds * 1000) + 1500, delaysetDisarmed)	//restore disarmed
+					}
+				else	
+					globalBeeperDevices.beep()
+				}
+//			moved location event here from top of routine or there is a 2 second delay producing the beep/chime
 			def locevent = [name:"Nyckelharpatalk", value: "contactOpenMsg", isStateChange: true,
 				displayed: true, descriptionText: "${evt.displayName} is open", linkText: "${evt.displayName} is open",
 				data: "${evt.displayName}"]	
 			sendLocationEvent(locevent)
-			if (globalBeeperDevices)
-				globalBeeperDevices.beep()
 			}
 		else
 			{
@@ -1587,9 +1820,8 @@ def MonitorDoorHandler(evt)		//monitored only no child device
 				data: "${evt.displayName}"]	
 			sendLocationEvent(locevent)
 			}
-
-		}	
-	}
+		}
+	}	
 
 def closePanicContact()
 	{
