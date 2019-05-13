@@ -9,7 +9,7 @@
 [&ensp;4. Installation](#install)<br />
 [&ensp;5. Quick Setup Guide](#setup)<br />
 [&ensp;6. Global Settings](#globals)<br />
-[&ensp;7. Adjust HSM Settings](#adjustHSM)<br />
+[&ensp;7. Forced Arming, Adjust HSM Settings](#adjustHSM)<br />
 [&ensp;8. Modefix Setup and Usage](#modefix)<br />
 [&ensp;9. Talker messages](#talker)<br />
 [10. Keypad Device Handler](#keypadDH)<br />
@@ -95,7 +95,7 @@ https://docs.hubitat.com/index.php?title=How_to_Install_Custom_Drivers
 Detailed instuctions for each step follow the Quick Setup Guide. Begin by clicking on APPs in the HE menu, then click on Nyckelharpa
 1. Setup [Global Settings](#globals), then click Next, then Done.
 
-2. Adjust [HSM's settings](#adjustHSM) 
+2. Setup [Forced Arming, Adjust HSM's settings](#adjustHSM) 
 3. Create [the Modefix profile](#modefix)
 4. Optionally create a [Talker profile](#talker)
 5. Optionally set a one or more existing keypad devices to use the user provided [Centralite Driver](#keypadDH), then add one or more [User pin profiles](#userpin) 
@@ -124,7 +124,7 @@ Global Settings is reached by: clicking Apps in the menu, then click the Nyckelh
 [:arrow_up_small: Back to top](#top)
 
 <a name="adjustHSM"></a>
-## 7. Adjust HSM Settings. Includes information on Forced HSM Arming.
+## 7. Forced Arming, Adjust HSM Settings.
 
 Creating and saving Nyckelharpa's Global Settings generates one or more child Virtual Contact Sensors with names starting with the device prefix text, default NCKL. These sensors must be incorporated into the HSM settings.
 
@@ -137,7 +137,7 @@ Creating and saving Nyckelharpa's Global Settings generates one or more child Vi
 
 3. How to Force Arm:
 * Arm system as you would normally. When there is an open contact sensor monitored by Nyckelharpa, the system will not arm as is normal for HSM
-* At the initial arm fail: keypads beep twice, and Talker issues a messages alterting you to the failing sensors and note the 15 second force rearm timing 
+* At the initial arm fail: any defined keypads beep twice, Talker issues a message alterting you to the failing sensor(s) that also contains the 15 second force rearm timing 
 * The system may now be force armed by rearming the system after a minimum of 3 seconds, to a maximum of 15 seconds, from the initial arming failure
   
 [:arrow_up_small: Back to top](#top)
