@@ -126,7 +126,7 @@ Global Settings is reached by: clicking Apps in the menu, then click the Nyckelh
 <a name="adjustHSM"></a>
 ## 7. Forced Arming, Adjust HSM Settings.
 
-Forced Arming is a two step process: An standard initial HSM arming that fails normally, followed by a second arming within 15 seconds that forces HSM to arm. I works from any arming source, including: keypads, locks, dashboards, and the HSM app
+Forced Arming is a two step process: An standard initial HSM arming that fails normally, followed by a second arming within 15 seconds that forces HSM to arm. It works from any arming source, including: keypads, locks, dashboards, and the HSM app
 
 1. Required Basic Setup: 
 * Follow instrucions in Section 6 above, generating the NCKL-child-contact-sensors, and the NCKL-Panic Contact 
@@ -136,9 +136,9 @@ Forced Arming is a two step process: An standard initial HSM arming that fails n
 * In "Configure/Arming/Disarming/Cancel Options", "Delay only for selected doors": replace the real contact-sensor-name(s) with the virtual NCKL-contact-sensor-name(s)
 
 3. How to Force Arm, a two step process: Arming that fails normally, then Arming again within 15 seconds
-* Arm system as you would normally. When there is an open contact sensor monitored by Nyckelharpa when it is armed, the system will not arm as is normal for HSM
-* At the initial arm fail: any defined keypads beep twice, Talker issues a message alterting you to the failing sensor(s) that also contains the 15 second force rearm timing 
-* The system may now be force armed by rearming the system after a minimum of 3 seconds, to a maximum of 15 seconds, from the initial arming failure
+* Arm system as you would normally. When there is an open contact sensor monitored by Nyckelharpa, the system will not arm as is normal for HSM
+* At the initial arm fail: any defined keypads beep twice, Talker issues an alert message including the open sensor(s) and the 15 second forced rearm time 
+* Arming the system again, after a minimum of 3 seconds, to a maximum of 15 seconds from the initial arming failure, forces the HSM system to Arm
   
 [:arrow_up_small: Back to top](#top)
 <a name="modefix"></a>
