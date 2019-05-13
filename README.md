@@ -112,7 +112,7 @@ Global Settings is reached by: clicking Apps in the menu, then click the Nyckelh
 2. <b>Prepare for Forced Arming:</b> <i>For each armState</i> select real contact sensor devices that will allow HSM arming when the device is Open.
 * _When Global Settings is saved, each selectd contact generates a child Virtual Contact Sensor named NCKL-contact-sensor-name that must be used to Adjust HSM Settings for Forced HSM Arming
 * Specify optional destinations for "arming canceled contact open" and "arming forced messages: Pushover, SMS, Talk. No destinations: these messages are not generated
-3. Select any contact to be monitored for Open / Close that were not selected for Forced HSM Arming
+3. Select any contact to be monitored for Open / Close Talker messages only, that are not used with Forced HSM Arming
 
 4. Select any alarms and beeps as required
 5. Set the Virtual Child Device prefix, Default NCKL. Once set, it displays but cannot be changed.
