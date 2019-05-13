@@ -96,7 +96,7 @@ Detailed instuctions for each step follow the Quick Setup Guide. Begin by clicki
 1. Setup [Global Settings](#globals), then click Next, then Done.
 
 2. Setup [Forced Arming, Adjust HSM's settings](#adjustHSM) 
-3. Create [the Modefix profile](#modefix)
+3. Create [the Required Modefix profile](#modefix)
 4. Optionally create a [Talker profile](#talker)
 5. Optionally set a one or more existing keypad devices to use the user provided [Centralite Driver](#keypadDH), then add one or more [User pin profiles](#userpin) 
 
