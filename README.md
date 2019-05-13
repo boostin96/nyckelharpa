@@ -126,14 +126,14 @@ Global Settings is reached by: clicking Apps in the menu, then click the Nyckelh
 <a name="adjustHSM"></a>
 ## 7. Forced Arming, Adjust HSM Settings.
 
-Creating and saving Nyckelharpa's Global Settings generates one or more child Virtual Contact Sensors with names starting with the device prefix text, default NCKL. These sensors must be incorporated into the HSM settings.
+Forced Arming is a two step process: An standard initial HSM arming that fails normally, followed by a second arming within 15 seconds that forces HSM to arm. I works from any arming source, including: keypads, locks, dashboards, and the HSM app
 
 1. Required Basic Setup: 
 * Follow instrucions in Section 6 above, generating the NCKL-child-contact-sensors, and the NCKL-Panic Contact 
 
-2. Setup Forced HSM Arming: 
+2. Setup HSM's devices for Forced Arming: 
 * In Intrusion-Away, Intrusion-Home, and Intrusion-Night, "Contact Sensors": replace the real contact-sensor-name(s) with the virtual NCKL-contact-sensor-name(s), and add the NCKL-Panic-Contact
-* In "Configure/Arming/Disarming/Cancel Options", "Delay only for selected doors": replace the real contact-sensor-name with the virtual NCKL-contact-sensor-name(s)
+* In "Configure/Arming/Disarming/Cancel Options", "Delay only for selected doors": replace the real contact-sensor-name(s) with the virtual NCKL-contact-sensor-name(s)
 
 3. How to Force Arm, a two step process: Arming that fails normally, then Arming again within 15 seconds
 * Arm system as you would normally. When there is an open contact sensor monitored by Nyckelharpa when it is armed, the system will not arm as is normal for HSM
