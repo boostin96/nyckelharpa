@@ -163,18 +163,22 @@ Table with Reason Issued and Message Issued.
   <tr>
     <th>Reason Issued</th>
     <th>Default Message</th>
+   <th>Issueing Module</th> 
   </tr>
   <tr>
     <td>Contact Sensor Opens, arm state disarmed</td>
     <td>%device is now open</td>
+   <td>Nyckelharpa</td>
   </tr>
   <tr>
     <td>Contact Sensor Closes, arm state disarmed</td>
-    <td>%device is now closed</td>
-  </tr>
+   <td>%device is now closed</td>
+   <td>Nyckelharpa</td>
+ </tr>
   <tr>
     <td>Exit Delay</td>
     <td>Alarm system is arming in %nn seconds. Please exit the facility</td>
+   <td>Nyckelharpa Modefix</td>
   </tr>
   <tr>
     <td>Entry Delay</td>
@@ -183,26 +187,32 @@ Table with Reason Issued and Message Issued.
   <tr>
     <td>System Armed</td>
     <td>Alarm System is now armed in %hsmStatus Mode</td>
+   <td>Nyckelharpa Modefix</td>
   </tr>
   <tr>
     <td>System Disarmed</td>
     <td>System Disarmed</td>
+   <td>Nyckelharpa Modefix</td>
   </tr>
   <tr>
     <td>Valid Pin Entered</td>
     <td>%keypad.displayname set HSM state to %armState with pin for %userName</td>
+    <td>Nyckelharpa</td>
   </tr> 
   <tr>
     <td>Bad Pin Entered</td>
     <td>%keypad.displayname Invalid pin entered: %pinCode</td>
+    <td>Nyckelharpa</td>
   </tr>
    <tr>
     <td>Arming Canceled Open Contact</td>
     <td>Arming Canceled %contact name(s) is open. Rearming within 15 seconds will force arming </td>
+    <td>Nyckelharpa</td>    
   </tr> 
   <tr>
     <td>Arming Forced Open Contact</td>
-    <td>Arming Forced %contact name(s) is open.</td>
+    <td>Arming Forced %contact name(s) is open.
+   </td><td>Nyckelharpa</td>
   </tr>
   </table>
 
