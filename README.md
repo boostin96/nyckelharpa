@@ -129,8 +129,8 @@ Global Settings is reached by: clicking Apps in the menu, then click the Nyckelh
 Creating and saving Nyckelharpa's Global Settings generates one or more child Virtual Contact Sensors with names starting with the device prefix text, default NCKL. These sensors must be incorporated into the HSM settings.
 
 1. Required Basic Setup: 
-* In Intrusion-Away, Intrusion-Home, and Intrusion-Night, "Contact Sensors": add device NCKL-Panic Contact 
-* In "Configure/Arming/Disarming/Cancel Options", in any armState where entry delay is used, set on "Delay only for selected doors", then _exclude_ NCKL-Panic Contact from the selected devices 
+* Follow instrucions in Section 6 above, generating the NCKL-child-contact-sensors, and the NCKL-Panic Contact 
+
 2. Setup Forced HSM Arming: 
 * In Intrusion-Away, Intrusion-Home, and Intrusion-Night, "Contact Sensors": replace the real contact-sensor-name with the virtual NCKL-contact-sensor-name
 * In "Configure/Arming/Disarming/Cancel Options", "Delay only for selected doors": replace the real contact-sensor-name with the virtual NCKL-contact-sensor-name
