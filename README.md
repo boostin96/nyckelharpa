@@ -103,7 +103,7 @@ Detailed instuctions for each step follow the Quick Setup Guide. Begin by clicki
 [:arrow_up_small: Back to top](#top)
 
 <a name="globals"></a>
-## 6. Global Settings. Includes information or Forced HSM Arming.
+## 6. Global Settings. Includes preparation information needed for Forced HSM Arming.
 
 Global Settings is reached by: clicking Apps in the menu, then click the Nyckelharpa app, scroll down to Global Settings, then click  "click to show" 
 1. Select any keypad devices using the Nyckelharpa provided Centralite Keypad device driver
