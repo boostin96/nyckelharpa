@@ -109,9 +109,9 @@ Global Settings is reached by: clicking Apps in the menu, then click the Nyckelh
 1. Select any keypad devices using the Nyckelharpa provided Centralite Keypad device driver
 * When devices are selected, default options for valid and invalid pin message routing are shown
 
-2. For each armState select real contact sensor devices that allow HSM arming when the device is Open.
-* _When Global Settings is saved, it generates child Virtual Contact Sensor named NCKL-contact-sensor-name that must be used to Adjust HSM Settings for Forced HSM Arming
-* Specify one or more destinations for "arming cancled contact open" and "arming forced messages: Pushover, SMS, Talk
+2. <b>Prepare for Forced Arming:</b> <i>For each armState</i> select real contact sensor devices that will allow HSM arming when the device is Open.
+* _When Global Settings is saved, each selectd contact generates a child Virtual Contact Sensor named NCKL-contact-sensor-name that must be used to Adjust HSM Settings for Forced HSM Arming
+* Specify optional destinations for "arming canceled contact open" and "arming forced messages: Pushover, SMS, Talk. No destinations: these messages are not generated
 3. Select any contact to be monitored for Open / Close that were not selected for Forced HSM Arming
 
 4. Select any alarms and beeps as required
@@ -132,11 +132,11 @@ Creating and saving Nyckelharpa's Global Settings generates one or more child Vi
 * Follow instrucions in Section 6 above, generating the NCKL-child-contact-sensors, and the NCKL-Panic Contact 
 
 2. Setup Forced HSM Arming: 
-* In Intrusion-Away, Intrusion-Home, and Intrusion-Night, "Contact Sensors": replace the real contact-sensor-name with the virtual NCKL-contact-sensor-name
-* In "Configure/Arming/Disarming/Cancel Options", "Delay only for selected doors": replace the real contact-sensor-name with the virtual NCKL-contact-sensor-name
+* In Intrusion-Away, Intrusion-Home, and Intrusion-Night, "Contact Sensors": replace the real contact-sensor-name(s) with the virtual NCKL-contact-sensor-name(s), and add the NCKL-Panic-Contact
+* In "Configure/Arming/Disarming/Cancel Options", "Delay only for selected doors": replace the real contact-sensor-name with the virtual NCKL-contact-sensor-name(s)
 
-3. How to Force Arm:
-* Arm system as you would normally. When there is an open contact sensor monitored by Nyckelharpa, the system will not arm as is normal for HSM
+3. How to Force Arm, a two step process: Arming that fails normally, then Arming again within 15 seconds
+* Arm system as you would normally. When there is an open contact sensor monitored by Nyckelharpa when it is armed, the system will not arm as is normal for HSM
 * At the initial arm fail: any defined keypads beep twice, Talker issues a message alterting you to the failing sensor(s) that also contains the 15 second force rearm timing 
 * The system may now be force armed by rearming the system after a minimum of 3 seconds, to a maximum of 15 seconds, from the initial arming failure
   
