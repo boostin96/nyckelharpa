@@ -135,7 +135,10 @@ Creating and saving Nyckelharpa's Global Settings generates one or more child Vi
 * In Intrusion-Away, Intrusion-Home, and Intrusion-Night, "Contact Sensors": replace the real contact-sensor-name with the virtual NCKL-contact-sensor-name
 * In "Configure/Arming/Disarming/Cancel Options", "Delay only for selected doors": replace the real contact-sensor-name with the virtual NCKL-contact-sensor-name
 
-
+3. How to Force Arm:
+* Arm system as you would normally. When there is an open contact sensor monitored by Nyckelharpa, the system will not arm as is normal for HSM
+* At the initial arm fail: keypads beep twice, and Talker issues a messages alterting you to the failing sensors and note the 15 second force rearm timing 
+* The system may now be force armed by rearming the system after a minimum of 3 seconds, to a maximum of 15 seconds, from the initial arming failure
   
 [:arrow_up_small: Back to top](#top)
 <a name="modefix"></a>
