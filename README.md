@@ -30,7 +30,7 @@ Why is this needed? HSM does not arm the system when a contact is open. Examples
 * Adjusts Hubitat's mode when HSM's arm state changes. (HSM adjusts HSM's arm state when the mode changes)
 * Provides an easy to use security related message control center with output to TTS, Speakers, and Pushover
 
-* Keypads: Centralite V2 and V3, and Iris V2 devices may use a ported version of Mitch Pond's Keypad DH making he keypad function as it did in SmartThings with the SHM Delay App, and it uses an easy to use Pin maintenance module with available use count, time. and devices restrictions.
+* Keypads: Centralite V2 and V3, Iris V2, and UEI(beta) devices may use a ported version of Mitch Pond's Keypad DH making he keypad function as it did in SmartThings with the SHM Delay App, and it uses an easy to use Pin maintenance module with available use count, time. and devices restrictions.
 * When Panic is issued using the ported version of Mitch Pond's keypad with the Nyckelharpa app:<br /> 
 When system is armed: triggers instant intrusion<br />
 When system is disarmed: attempts to arm system then issues an intrusion
@@ -75,7 +75,7 @@ There are four modules and an optional Keypad Device Handler (DH) associated wit
   </tr>
   <tr>
     <td>Centralite Keypad</td>
-    <td>Keypad device handler for models: Centralite V2 and V3, and Iris V2. Created and converted to HE by Mitch Pond</td>
+    <td>Keypad device handler for models: Centralite V2 and V3, Iris V2, and UEI(beta). Created and converted to HE by Mitch Pond</td>
     <td>Optional</td>
   </tr>
 </table> 
@@ -223,7 +223,7 @@ Table with Reason Issued and Message Issued.
 
 The app's Keypad Device Handler was created by Mitch Pond on SmartThings where it is still used by a few Smartapps including SHM Delay. With Mitch's assistance and Zigbee skills it was ported to HE, then I added the Alarm capability that sounds a fast high pitch tone until set off on the Iris V2, and beeps for 255 seconds on the Centralite. 
 
-_This DH may be used with the Centralite V2, Centralite V3, and Iris V2 keypads_
+_This DH may be used with the Centralite V2, Centralite V3, Iris V2, and UEI(beta) keypads_
 
 1. After installing the keypad DH, go to devices, change Type to Centralitex Keypad, Save Device
 
