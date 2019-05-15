@@ -237,9 +237,11 @@ _This DH may be used with the Centralite V2, Centralite V3, Iris V2, and UEI(bet
 
 When using the app's keypad DH,  User pin profiles must be created for each valid pin code.
 
-Pin codes may be restricted by date/time, use count (burnable pins), and keypad device
+* Pin codes may be restricted by date/time, use count (burnable pins), and keypad device
 
-To use the Iris V2's instant arming, no pin required, create a User profile with pin code 0000. It is not accepted for OFF
+* To use the Iris V2's instant arming, no pin required, create a User profile with pin code 0000. It is not accepted for OFF
+
+* You may define "Panic Pins" designed for use on keypads without a Panic key, but may be used on any keypad
 
 [:arrow_up_small: Back to top](#top)
 <a name="testing"></a>
