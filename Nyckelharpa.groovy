@@ -22,6 +22,7 @@
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
  * 
+ *	May 16, 2019 v0.1.6	add UEI model to keypads with 3 armed lighting modes
  *	May 12, 2019 v0.1.5	Show summary of settings on pageTwo prior to Done
  *						Insure non keypad device does not get a beep command with time, may create an error
  *	May 11, 2019 v0.1.5	Add settings for open door tone beep or last 10 seconds of setexitdelay
@@ -97,7 +98,7 @@ preferences {
 
 def version()
 	{
-	return "0.1.5";
+	return "0.1.6";
 	}
 def main()
 	{
@@ -1077,7 +1078,7 @@ def	keypadLighton(evt,theMode,keypad)
 	else
 	if (theMode == 'Night')					//Iris has no Night light set Partial on	
 		{
-		if (['3400','3400-G'].contains(keypad?.data.model) ||
+		if (['3400','3400-G','URC4450BC0-X-R'].contains(keypad?.data.model) ||
 			keypad?.getTypeName()=="Internet Keypad")
 			{
 			if (evt.source=="keypad")
