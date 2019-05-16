@@ -252,7 +252,7 @@ Keypad may be selected as an Optional Alarm device. Remove it as an Alarm device
 2. No exit delay tones<br />
 Create and save a Modefix profile
 
-3. Forced arming does not occur
+3. Forced arming does not occur<br />
 A user reported the Snapshot app somehow interfered with Nyclelharpa's forced arming, and removing or disabling Snapshot fixed the issue. This does not make sense to me, merely reporting what i was told by the user.
 
 [:arrow_up_small: Back to top](#top)
