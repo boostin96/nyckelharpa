@@ -22,6 +22,7 @@
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
  * 
+ *	May 17, 2019 v0.1.7	eliminate some odd code in keypadLighton for night arm state (also removed in SHM Delay)
  *	May 16, 2019 v0.1.6	add UEI model to keypads with 3 armed lighting modes
  *	May 12, 2019 v0.1.5	Show summary of settings on pageTwo prior to Done
  *						Insure non keypad device does not get a beep command with time, may create an error
@@ -98,7 +99,7 @@ preferences {
 
 def version()
 	{
-	return "0.1.6";
+	return "0.1.7";
 	}
 def main()
 	{
@@ -1078,28 +1079,10 @@ def	keypadLighton(evt,theMode,keypad)
 	else
 	if (theMode == 'Night')					//Iris has no Night light set Partial on	
 		{
-		if (['3400','3400-G','URC4450BC0-X-R'].contains(keypad?.data.model) ||
-			keypad?.getTypeName()=="Internet Keypad")
-			{
-			if (evt.source=="keypad")
-				{keypad.setArmedNight()}
-			else
-				{
-				currkeypadmode = keypad?.currentValue("armMode",true)
-				logdebug "keypadLightHandler LightRequest: ${theMode} model: ${keypad?.getModelName()} keypadmode: ${currkeypadmode}"
-				if (currkeypadmode =="armedStay")
-					{
-//						logdebug "keypadLightHandler model: ${keypad?.getModelName()} keypadmode: ${currkeypadmode} no lights unchanged"
-					}
-				else
-					{keypad.setArmedNight()}
-				}
-			}	
-
+		if (['3400','3400-G','URC4450BC0-X-R'].contains(keypad?.data.model) || 	keypad?.getTypeName()=="Internet Keypad")
+			keypad?.setArmedNight()
 		else
-			{
 			keypad?.setArmedStay()
-			}
 		}	
 	else
 	if (theMode == 'Away')					//lights ON light on Iris
